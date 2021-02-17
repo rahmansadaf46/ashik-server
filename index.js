@@ -20,7 +20,6 @@ app.get('/', (req, res) => {
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
     const studentCollection = client.db("studentEnrollmentSystem").collection("allStudent");
-    const adminCollection = client.db("studentEnrollmentSystem").collection("admin");
     app.post('/addStudent', (req, res) => {
 
         const student = req.body;
@@ -59,13 +58,6 @@ client.connect(err => {
             })
     })
 
-    app.post('/addAdmin', (req, res) => {
-        const admin = req.body;
-        adminCollection.insertOne(admin)
-            .then(result => {
-                res.send(result.insertedCount > 0);
-            })
-    })
     app.patch('/update/:id', (req, res) => {
         studentCollection.updateOne({ _id: ObjectId(req.params.id) },
             {
@@ -77,14 +69,6 @@ client.connect(err => {
             })
             .then(result => {
                 res.send(result.matchedCount > 0);
-            })
-    })
-
-    app.post('/isAdmin', (req, res) => {
-        const email = req.body.email;
-        adminCollection.find({ email: email })
-            .toArray((err, admins) => {
-                res.send(admins.length > 0);
             })
     })
 
