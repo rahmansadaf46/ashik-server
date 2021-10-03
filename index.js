@@ -21,8 +21,8 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
     const studentCollection = client.db("studentEnrollmentSystem").collection("allStudent");
     app.post('/addStudent', (req, res) => {
-
         const student = req.body;
+        console.log(student);
         studentCollection.insertOne(student)
             .then(result => {
                 res.send(result.insertedCount > 0);
@@ -33,6 +33,7 @@ client.connect(err => {
         studentCollection.deleteOne({ _id: ObjectId(req.params.id) })
             .then((result) => {
                 res.send(result.deletedCount > 0);
+                console.log(res);
             })
     })
 
